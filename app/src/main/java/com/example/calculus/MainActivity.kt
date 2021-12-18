@@ -34,12 +34,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onDigit(view: View) {
-        Log.e("sdfg", (view as Button).text.toString())
+        Log.e("onDigit", (view as Button).text.toString())
+        Log.e("onDigit", stateError.toString())
+        Log.e("onDigit", txtInput.text.toString())
         if (stateError) {
             txtInput.text = (view as Button).text
             stateError = false
         } else {
             txtInput.append((view as Button).text)
+            Log.e("onDigit", txtInput.text.toString())
         }
         lastNumeric = true
     }
@@ -53,10 +56,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onOperator(view: View) {
+        Log.e("onOperator", stateError.toString())
         if (lastNumeric && !stateError) {
+            Log.e("onOperator", txtInput.text.toString())
             txtInput.append((view as Button).text.toString())
             lastNumeric = false
             lastDot = false
+            Log.e("onOperator", txtInput.text.toString())
         }
     }
 
@@ -68,6 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onEqual(view: View) {
+        Log.e("dsfg", stateError.toString())
         if (lastNumeric && !stateError) {
             val txt = txtInput.text.toString()
             val expression = ExpressionBuilder(txt).build()
