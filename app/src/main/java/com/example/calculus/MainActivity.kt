@@ -1,4 +1,4 @@
-package com.javahelps.kotlincalculator
+package com.example.calculus
 
 import android.os.Bundle
 import android.util.Log
@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.calculus.R
 import net.objecthunter.exp4j.ExpressionBuilder
 
 
@@ -20,11 +19,19 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("str", txtInput.text.toString())
+        outState.putBoolean("stateError", stateError)
+        outState.putBoolean("lastDot", lastDot)
+        outState.putBoolean("lastNumeric", lastNumeric)
+
+
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         txtInput.text = savedInstanceState.getString("str")
+        lastNumeric = savedInstanceState.getBoolean("lastNumeric")
+        stateError = savedInstanceState.getBoolean("stateError")
+        lastDot = savedInstanceState.getBoolean("lastDot")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,17 +81,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onEqual(view: View) {
-        Log.e("dsfg", stateError.toString())
+        Log.e("onEqual", stateError.toString())
+        Log.e("onEqual", lastNumeric.toString())
         if (lastNumeric && !stateError) {
             val txt = txtInput.text.toString()
             val expression = ExpressionBuilder(txt).build()
             try {
                 val result = expression.evaluate()
-                Log.e("dsfg", result.toString())
-                Log.e("dsfg",txt)
+                Log.e("onEqual", result.toString())
+                Log.e("onEqual",txt)
                 txtInput.text = result.toString()
                 lastDot = true
             } catch (ex: ArithmeticException) {
+                Log.e("onEqual",txt)
                 txtInput.text = "Error"
                 stateError = true
                 lastNumeric = false
